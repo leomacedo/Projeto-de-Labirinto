@@ -51,6 +51,15 @@ namespace labirintoSemArquivo
                         {
                             parede.Add(new Tuple<int, int>(i, 0));
                         }
+                        // tem que testar:
+                        if (i == linha)
+                        {
+                            parede.Add(new Tuple<int, int>(linha + 1, j));
+                        }
+                        if (j == coluna)
+                        {
+                            parede.Add(new Tuple<int, int>(i, coluna + 1));
+                        }
                     }
                     else if (lab[i, j] == "0")
                     {
@@ -67,6 +76,8 @@ namespace labirintoSemArquivo
                 //Console.WriteLine();
             }
             Console.WriteLine();
+            Console.WriteLine(linha);
+            Console.WriteLine(coluna);
             Console.WriteLine(origem);
             origem = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
             Console.WriteLine(origem);
