@@ -28,7 +28,7 @@ namespace labirintoSemArquivo
             var origem2 = new List<int[]>();
 
             var origem = new Tuple<int, int>(0, 0);
-            var livres = new List<Tuple<int, int>>();
+            var livres = new List<Tuple<int, int>>(); 
             var parede = new List<Tuple<int, int>>();
 
             for (int i = 1; i <= linha; i++)
