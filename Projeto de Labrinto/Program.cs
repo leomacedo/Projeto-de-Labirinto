@@ -9,7 +9,19 @@ namespace labirintoSemArquivo
 {
     class Program
     {
-
+        static Tuple<int,int> origem = new Tuple<int, int>(0, 0);
+        static Tuple<int, int> movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
+        static Tuple<int, int> movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
+        static Tuple<int, int> movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
+        static Tuple<int, int> movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+        
+        static void ResetaMovimentos()
+        {
+            movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
+            movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
+            movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
+            movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+        }
         static void Main(string[] args)
         {
             StreamReader arquivo = new StreamReader("entrada-labirinto.txt");
@@ -18,7 +30,7 @@ namespace labirintoSemArquivo
             int[] dimensao = Array.ConvertAll(arquivo.ReadLine().Split(' '), int.Parse);
             int linha = dimensao[0];
             int coluna = dimensao[1];
-            string[,] lab = new string[linha + 1, coluna + 1];
+            string[,] lab = new string[linha+2, coluna+2];
 
             lab[1, 1] = "1"; lab[1, 2] = "1"; lab[1, 3] = "1"; lab[1, 4] = "1"; lab[1, 5] = "1"; lab[1, 6] = "1"; lab[1, 7] = "1"; lab[1, 8] = "1";
             lab[2, 1] = "1"; lab[2, 2] = "1"; lab[2, 3] = "0"; lab[2, 4] = "1"; lab[2, 5] = "0"; lab[2, 6] = "1"; lab[2, 7] = "1"; lab[2, 8] = "1";
@@ -26,9 +38,8 @@ namespace labirintoSemArquivo
             lab[4, 1] = "X"; lab[4, 2] = "0"; lab[4, 3] = "0"; lab[4, 4] = "1"; lab[4, 5] = "0"; lab[4, 6] = "0"; lab[4, 7] = "0"; lab[4, 8] = "0";
             lab[5, 1] = "1"; lab[5, 2] = "1"; lab[5, 3] = "1"; lab[5, 4] = "1"; lab[5, 5] = "1"; lab[5, 6] = "1"; lab[5, 7] = "1"; lab[5, 8] = "1";
 
-            var origem2 = new List<int[]>();
+            // var origem2 = new List<int[]>();
 
-            var origem = new Tuple<int, int>(0, 0);
             var livres = new List<Tuple<int, int>>();
             var parede = new List<Tuple<int, int>>();
             var percorridos = new List<Tuple<int, int>>();
@@ -78,11 +89,8 @@ namespace labirintoSemArquivo
             //arqsaida.WriteLine(origem);
             //arqsaida.WriteLine("oi");
 
-            var movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-            var movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-            var movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-            var movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
 
+            ResetaMovimentos();
             if (origem.Item1 == 1 || origem.Item2 == 1 || origem.Item1 == linha || origem.Item2 == coluna)
             {
 
@@ -93,54 +101,46 @@ namespace labirintoSemArquivo
                     {
                         livres.Remove(parte);
                         arqsaida.WriteLine("C [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
                         percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
                     }
                     else if (movesquerda.Item1 == parte.Item1 && movesquerda.Item2 == parte.Item2)
                     {
                         livres.Remove(parte);
                         arqsaida.WriteLine("E [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
                         percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
                     }
                     else if (movedireita.Item1 == parte.Item1 && movedireita.Item2 == parte.Item2)
                     {
                         livres.Remove(parte);
-                        percorridos.Add(parte);
                         arqsaida.WriteLine("D [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
+                        percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
                     }
                     else if (movebaixo.Item1 == parte.Item1 && movebaixo.Item2 == parte.Item2)
                     {
                         livres.Remove(parte);
                         arqsaida.WriteLine("B [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
                         percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
-                    }  
+                    }
                 };
             };
 
@@ -161,76 +161,72 @@ namespace labirintoSemArquivo
                     {
                         livres.Remove(parte);
                         arqsaida.WriteLine("C [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
                         percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
                     }
                     else if (movesquerda.Item1 == parte.Item1 && movesquerda.Item2 == parte.Item2)
                     {
                         livres.Remove(parte);
                         arqsaida.WriteLine("E [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
                         percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
                     }
                     else if (movedireita.Item1 == parte.Item1 && movedireita.Item2 == parte.Item2)
                     {
                         livres.Remove(parte);
-                        percorridos.Add(parte);
                         arqsaida.WriteLine("D [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
+                        percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
                     }
                     else if (movebaixo.Item1 == parte.Item1 && movebaixo.Item2 == parte.Item2)
                     {
                         livres.Remove(parte);
                         arqsaida.WriteLine("B [" + parte.Item1 + ", " + parte.Item2 + "]");
+                        lab[parte.Item1, parte.Item2] = "P";
                         percorridos.Add(parte);
                         caminho.Push(parte);
-                        origem = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
+                        origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                        ResetaMovimentos();
                         break;
-                    }
-                    else if (livres.ForEach(parte) != origem)
-                        //movecima.Item1 == parte.Item1 && movecima.Item2 == parte.Item2 ||
-                        //    movesquerda.Item1 == parte.Item1 && movesquerda.Item2 == parte.Item2 ||
-                        //    movedireita.Item1 == parte.Item1 && movedireita.Item2 == parte.Item2 ||
-                        //    (movebaixo.Item1 == parte.Item1 && movebaixo.Item2 == parte.Item2))
-                    {
-                        livres.Remove(caminho.Peek());
-                        percorridos.Remove(caminho.Peek());
-                        caminho.Pop();
-                        if (caminho.Peek().Item1 == origem.Item1 - 1 && caminho.Peek().Item2 == origem.Item2) { arqsaida.WriteLine("C [" + parte.Item1 + ", " + parte.Item2 + "]"); };
-                        if (caminho.Peek().Item1 == origem.Item1  && caminho.Peek().Item2 -1 == origem.Item2) { arqsaida.WriteLine("E [" + parte.Item1 + ", " + parte.Item2 + "]"); };
-                        if (caminho.Peek().Item1 == origem.Item1  && caminho.Peek().Item2 +1 == origem.Item2) { arqsaida.WriteLine("D [" + parte.Item1 + ", " + parte.Item2 + "]"); };        
-                        if (caminho.Peek().Item1 == origem.Item1 + 1 && caminho.Peek().Item2 == origem.Item2) { arqsaida.WriteLine("B [" + parte.Item1 + ", " + parte.Item2 + "]"); };
-
-                        origem = new Tuple<int, int>(caminho.Peek().Item1, caminho.Peek().Item2);
-                        movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
-                        movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
-                        movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
-                        movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
                     };
                     //Console.WriteLine(origem);
-                }
+                };
+                // ResetaMovimentos();
+                if (lab[movecima.Item1,movecima.Item2] != "0" &&
+                    lab[movesquerda.Item1,movesquerda.Item2] != "0" &&
+                    lab[movedireita.Item1,movedireita.Item2] != "0" &&
+                    lab[movebaixo.Item1,movebaixo.Item2] != "0")
+                //movecima.Item1 == parte.Item1 && movecima.Item2 == parte.Item2 ||
+                //    movesquerda.Item1 == parte.Item1 && movesquerda.Item2 == parte.Item2 ||
+                //    movedireita.Item1 == parte.Item1 && movedireita.Item2 == parte.Item2 ||
+                //    (movebaixo.Item1 == parte.Item1 && movebaixo.Item2 == parte.Item2))
+                {
+                    livres.Remove(caminho.Peek());
+                    percorridos.Remove(caminho.Peek());
+                    caminho.Pop();
+                    //if (caminho.Peek().Item1 == origem.Item1 - 1 && caminho.Peek().Item2 == origem.Item2) { arqsaida.WriteLine("C [" + parte.Item1 + ", " + parte.Item2 + "]"); };
+                    //if (caminho.Peek().Item1 == origem.Item1 && caminho.Peek().Item2 - 1 == origem.Item2) { arqsaida.WriteLine("E [" + parte.Item1 + ", " + parte.Item2 + "]"); };
+                    //if (caminho.Peek().Item1 == origem.Item1 && caminho.Peek().Item2 + 1 == origem.Item2) { arqsaida.WriteLine("D [" + parte.Item1 + ", " + parte.Item2 + "]"); };
+                    //if (caminho.Peek().Item1 == origem.Item1 + 1 && caminho.Peek().Item2 == origem.Item2) { arqsaida.WriteLine("B [" + parte.Item1 + ", " + parte.Item2 + "]"); };
+                    if (origem.Item1 != 1 && origem.Item2 != 1 && origem.Item1 != linha && origem.Item2 != coluna)
+                    {
+                        origem = new Tuple<int, int>(caminho.Peek().Item1, caminho.Peek().Item2);
+                        ResetaMovimentos();
+                    }
+                        
+                };
                 //Console.WriteLine(origem);
             }
             Console.WriteLine(origem);
