@@ -1,2 +1,3 @@
 # Projeto-de-Labrinto
-Só para aprendizado. TÁ INCOMPLETO AINDA.
+Só para aprendizado. Completo
+
