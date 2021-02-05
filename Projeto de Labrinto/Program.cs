@@ -31,7 +31,7 @@ namespace labirintoSemArquivo
             var caminho = new Stack<Tuple<int, int>>(); // Pilha de Tuplas da Posição da Origem
             
             // Leitura do Arquivo de entrada
-            using (StreamReader arquivoEntrada = new StreamReader("entrada-labirinto2.txt"))
+            using (StreamReader arquivoEntrada = new StreamReader("entrada-labirinto6.txt"))
             {
                 int[] dimensao = Array.ConvertAll(arquivoEntrada.ReadLine().Split(' '), int.Parse);
                 int linha = dimensao[0];
@@ -71,7 +71,7 @@ namespace labirintoSemArquivo
                 using (StreamWriter arquivoSaida = new StreamWriter("saida3.txt"))
                 {
                     arquivoSaida.WriteLine("O [" + origem.Item1 + ", " + origem.Item2 + "]");
-
+                    caminho.Push(origem);
                     ResetaMovimentos(); // Atribuindo valores de movimentos 
 
                     // Primeira condição é verificar se o X está em alguma extremidade. Se tiver executa o primeiro movimento
