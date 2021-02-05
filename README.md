@@ -1,3 +1,3 @@
 # Projeto-de-Labrinto
-Só para aprendizado. Completo
+Resolução de uma prova.
 
