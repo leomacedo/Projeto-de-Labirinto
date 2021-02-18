@@ -9,7 +9,7 @@ namespace labirintoSemArquivo
 {
     class Program
     {
-        // Variaveis Globais que se usam tanto no programa principal como ña função ResetaMovimentos()
+        // Variaveis Globais que se usam tanto no programa principal como na função ResetaMovimentos()
         static Tuple<int, int> origem = new Tuple<int, int>(0, 0);
         static Tuple<int, int> movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
         static Tuple<int, int> movesquerda = new Tuple<int, int>(origem.Item1, origem.Item2 - 1);
@@ -220,11 +220,11 @@ namespace labirintoSemArquivo
                     Console.WriteLine(ler);
                 }
                 // Vizualização no Console para testes. Pode ser Comentado.
-                // Console.WriteLine(origem);
                 Console.ReadLine();
             }
             else
             {
+                // Tratamento caso não haja o arquivo de entrada no diretório
                 Console.WriteLine("Não existe o arquivo de entrada:  \"entrada-labirinto\"");
                 Console.ReadLine();
             }
