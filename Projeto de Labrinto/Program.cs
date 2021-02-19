@@ -9,6 +9,10 @@ namespace labirintoSemArquivo
 {
     class Program
     {
+        // Variaveis Globais que se usam na função Percorre
+        static List<Tuple<int, int>> livres = new List<Tuple<int, int>>(); // Lista de Tuplas de Caminhos Livres
+        static Stack<Tuple<int, int>> caminho = new Stack<Tuple<int, int>>(); // Pilha de Tuplas da Posição da Origem
+
         // Variaveis Globais que se usam tanto no programa principal como na função ResetaMovimentos()
         static Tuple<int, int> origem = new Tuple<int, int>(0, 0);
         static Tuple<int, int> movecima = new Tuple<int, int>(origem.Item1 - 1, origem.Item2);
@@ -24,11 +28,17 @@ namespace labirintoSemArquivo
             movedireita = new Tuple<int, int>(origem.Item1, origem.Item2 + 1);
             movebaixo = new Tuple<int, int>(origem.Item1 + 1, origem.Item2);
         }
+
+        static void Percorre(Tuple<int, int> tuple, string[,] flab)
+        {
+            flab[tuple.Item1, tuple.Item2] = "P";
+            livres.Remove(tuple);
+            caminho.Push(tuple);
+            origem = new Tuple<int, int>(tuple.Item1, tuple.Item2);
+        }
+
         static void Main(string[] args)
         {
-
-            var livres = new List<Tuple<int, int>>(); // Lista de Tuplas de Caminhos Livres
-            var caminho = new Stack<Tuple<int, int>>(); // Pilha de Tuplas da Posição da Origem
 
             if (File.Exists("entrada-labirinto.txt"))
             {
@@ -87,10 +97,7 @@ namespace labirintoSemArquivo
                                 if (movecima.Item1 == parte.Item1 && movecima.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("C [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    livres.Remove(parte);
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 }
@@ -98,10 +105,7 @@ namespace labirintoSemArquivo
                                 else if (movesquerda.Item1 == parte.Item1 && movesquerda.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("E [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    livres.Remove(parte);
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 }
@@ -109,10 +113,7 @@ namespace labirintoSemArquivo
                                 else if (movedireita.Item1 == parte.Item1 && movedireita.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("D [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    livres.Remove(parte);
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 }
@@ -120,10 +121,7 @@ namespace labirintoSemArquivo
                                 else if (movebaixo.Item1 == parte.Item1 && movebaixo.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("B [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    livres.Remove(parte);
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 }
@@ -146,10 +144,7 @@ namespace labirintoSemArquivo
                                 if (movecima.Item1 == parte.Item1 && movecima.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("C [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    livres.Remove(parte);
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 }
@@ -157,10 +152,7 @@ namespace labirintoSemArquivo
                                 else if (movesquerda.Item1 == parte.Item1 && movesquerda.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("E [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    livres.Remove(parte);
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 }
@@ -168,10 +160,7 @@ namespace labirintoSemArquivo
                                 else if (movedireita.Item1 == parte.Item1 && movedireita.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("D [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    livres.Remove(parte);
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 }
@@ -179,10 +168,7 @@ namespace labirintoSemArquivo
                                 else if (movebaixo.Item1 == parte.Item1 && movebaixo.Item2 == parte.Item2)
                                 {
                                     arquivoSaida.WriteLine("B [" + parte.Item1 + ", " + parte.Item2 + "]");
-                                    livres.Remove(parte);
-                                    lab[parte.Item1, parte.Item2] = "P";
-                                    caminho.Push(parte);
-                                    origem = new Tuple<int, int>(parte.Item1, parte.Item2);
+                                    Percorre(parte, lab);
                                     ResetaMovimentos();
                                     break;
                                 };
