@@ -1,3 +1,3 @@
 # Projeto-de-Labrinto
-Resolução de uma prova.
+Leitura de um arquivo matriz de labirinto e retorna uma lista de tuplas como caminho.
 
